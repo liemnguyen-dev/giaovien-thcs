@@ -29,7 +29,7 @@
   @keyframes spin{to{transform:rotate(360deg);}}
 
   /* ── SIDEBAR ── */
-  .sidebar{width:260px;background:var(--ink);min-height:100vh;position:fixed;left:0;top:0;display:flex;flex-direction:column;z-index:100;box-shadow:4px 0 20px rgba(0,0,0,0.15);}
+  .sidebar{width:260px;background:var(--ink);height:100vh;position:fixed;left:0;top:0;display:flex;flex-direction:column;z-index:100;box-shadow:4px 0 20px rgba(0,0,0,0.15);overflow-y:auto;}
   .logo{padding:28px 24px 20px;border-bottom:1px solid rgba(255,255,255,0.08);}
   .logo-title{font-family:'Playfair Display',serif;font-size:22px;color:#fff;letter-spacing:1px;}
   .logo-sub{font-size:10px;color:var(--mint);letter-spacing:3px;text-transform:uppercase;margin-top:2px;}
@@ -176,7 +176,7 @@
   .week-nav button{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.2s;}
   .week-nav button:hover{border-color:var(--accent);color:var(--accent);}
 
-  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:#cbd5e0;border-radius:3px}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:#cbd5e0;border-radius:3px}.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-track{background:transparent}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:3px}.sidebar::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.3)}
   @media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}}
 </style>
 </head>
@@ -488,7 +488,7 @@
                 <div style="width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,#4285f4,#34a853);display:flex;align-items:center;justify-content:center;font-size:26px">☁️</div>
                 <div>
                   <div style="font-weight:700;font-size:15px">Google Drive</div>
-                  <div style="font-size:12px;color:var(--green);font-weight:600;margin-top:2px">✅ liemgdcdvts@gmail.com</div>
+                  <div style="font-size:12px;color:var(--green);font-weight:600;margin-top:2px">✅ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bcd0d5d9d1dbd8dfd8cac8cffcdbd1ddd5d092dfd3d1">[email&#160;protected]</a></div>
                   <div style="font-size:11px;color:var(--muted);margin-top:2px">📁 EduTrack_Backup → 2025-2026 → HK2</div>
                 </div>
               </div>
@@ -643,7 +643,7 @@
 
 <div class="notif" id="notif"><span id="notif-text">OK</span></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ════════════════════════════════════════════════════════════
 //  API LAYER — gọi Apps Script qua fetch() thay vì google.script.run
 //  → Không phụ thuộc Apps Script để load giao diện
@@ -1103,11 +1103,4 @@ function showSettingsTab(id,el) {
 function toggleSwitch(el) {
   const on=el.style.background.includes('56, 161')||el.style.background==='var(--green)'||el.style.background==='rgb(56, 161, 105)';
   const thumb=el.querySelector('div');
-  if(on){el.style.background='var(--border)';thumb.style.left='2px';thumb.style.right='auto';}
-  else{el.style.background='var(--green)';thumb.style.right='2px';thumb.style.left='auto';}
-}
-
-$('att-date').value=new Date().toISOString().split('T')[0];
-</script>
-</body>
-</html>
+  if(on){el.style.background='var(--border)'
