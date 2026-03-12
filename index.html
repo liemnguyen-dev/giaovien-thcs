@@ -661,11 +661,16 @@ function setApiUrl(url) {
 
 // Gọi API bằng fetch POST
 async function api(action, payload = {}) {
-  const url = getApiUrl();
-  if (!url) throw new Error('Chưa cấu hình API URL!');
-  const res = await fetch(url, {
-    method: 'POST',
-    body: JSON.stringify({ action, payload }),
+  const base = getApiUrl();
+  if (!base) throw new Error('Chưa cấu hình API URL!');
+  // Dùng GET thay POST vì Apps Script chỉ hỗ trợ CORS qua doGet()
+  const params = new URLSearchParams({
+    action,
+    payload: JSON.stringify(payload)
+  });
+  const res = await fetch(base + '?' + params.toString(), {
+    method: 'GET',
+    redirect: 'follow',
   });
   if (!res.ok) throw new Error('HTTP ' + res.status);
   return res.json();
