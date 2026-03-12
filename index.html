@@ -650,10 +650,14 @@
 //  → Giao diện hiển thị ngay lập tức
 // ════════════════════════════════════════════════════════════
 
-const API_KEY = 'https://script.google.com/macros/s/AKfycbwEJsoCxQPdxCfpnM1_qcAYuPr7qJZWp1yP_HQDuALhvamoAQanUfeVHCBOYBaTOsg/exec';
+const API_KEY = 'edutrack_api_url';
+// ── CẤU HÌNH URL API ── Dán URL Apps Script của bạn vào đây
+// Sau khi điền, không cần nhập lại mỗi lần mở app
+const HARDCODED_API_URL = 'REPLACE_WITH_YOUR_URL';
 
 function getApiUrl() {
-  return localStorage.getItem(API_KEY) || '';
+  // Ưu tiên: localStorage (người dùng nhập) → HARDCODED_API_URL → ''
+  return localStorage.getItem(API_KEY) || HARDCODED_API_URL || '';
 }
 function setApiUrl(url) {
   localStorage.setItem(API_KEY, url.trim());
