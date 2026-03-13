@@ -665,22 +665,35 @@ function setApiUrl(url) {
   localStorage.setItem(API_KEY, url.trim());
 }
 
-// Gọi Apps Script qua fetch — đơn giản, ổn định
-// Apps Script tự động cho phép CORS khi deploy "Mọi người"
-async function api(action, payload = {}) {
-  const base = getApiUrl();
-  if (!base || base === 'https://script.google.com/macros/s/AKfycbwHM1iMWTKmco7EMwd-RiSoXPiPRrEAMtBCjG3ZNtiZsGWXNaGImCeZnE5ZJijVuwv6HA/exec') {
-    throw new Error('Chưa cấu hình API URL!');
-  }
-  const params = new URLSearchParams({
-    action: action,
-    payload: JSON.stringify(payload)
+// Gọi Apps Script qua <script> tag (JSONP) — cách duy nhất vượt CORS
+function api(action, payload = {}) {
+  return new Promise((resolve, reject) => {
+    const base = getApiUrl();
+    if (!base) { reject(new Error('Chưa cấu hình URL!')); return; }
+
+    const cb = '_cb' + Date.now();
+    const t  = setTimeout(() => { cleanup(); reject(new Error('Timeout 15s')); }, 15000);
+
+    function cleanup() {
+      clearTimeout(t);
+      delete window[cb];
+      const s = document.getElementById(cb);
+      if (s) s.remove();
+    }
+
+    window[cb] = function(data) { cleanup(); resolve(data); };
+
+    const p = new URLSearchParams({
+      action:   action,
+      payload:  JSON.stringify(payload),
+      callback: cb
+    });
+    const s   = document.createElement('script');
+    s.id      = cb;
+    s.src     = base + '?' + p.toString();
+    s.onerror = () => { cleanup(); reject(new Error('Lỗi kết nối script')); };
+    document.head.appendChild(s);
   });
-  const url = base + '?' + params.toString();
-  const res = await fetch(url, { redirect: 'follow' });
-  if (!res.ok) throw new Error('HTTP ' + res.status);
-  const text = await res.text();
-  return JSON.parse(text);
 }
 
 // ════════════════════════════════════════════════════════════
